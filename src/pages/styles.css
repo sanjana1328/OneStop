@@ -1,0 +1,203 @@
+/* src/pages/Home.css */
+/* General Styles */
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    background-color: #ffffff;
+    color: #333;
+}
+.main{
+    margin: 0;
+    height: 100%;
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-image: url('./img.jpg');
+}
+
+h1 {
+    margin-top: 100px;
+    font-size: 2.5em;
+    font-weight: bold;
+    color: #333;
+    text-align: center;
+}
+
+.subtitle {
+    margin-bottom: 50px;
+    text-align: center;
+    font-size: 1.2rem;
+    color: #555;
+}
+
+.buttons {
+    margin-top: 30px;
+    margin-bottom: 150px;
+    margin-left: 468px;
+}
+
+.buttons .btn1{
+    text-decoration: none;
+    background-color: #006666;
+    color: #fff;
+    padding: 10px 30px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: 0 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+.buttons .btn2 {
+    text-decoration: none;
+    background-color: #006666;
+    color: #fff;
+    padding: 10px 33px;
+    border-radius: 5px;
+    font-size: 1.2em;
+    margin: 0 10px;
+    display: inline-block;
+    cursor: pointer;
+}
+
+.buttons .btn1:hover,
+.buttons .btn2:hover {
+    background-color: #004d4d;
+}
+
+.works {
+    font-family: Arial, sans-serif;
+    background-color: rgba(56, 108, 108, 0.8); /* Make background semi-transparent */
+    margin-top: 0;
+    color: #fff;
+    padding: 0;
+    height: 500px;
+}
+.how-works{
+    text-align: center;
+    padding: 50px 20px;
+}
+.how-works h2 {
+    font-size: 2.5rem;
+    margin-bottom: 40px;
+}
+
+.steps-container {
+    display: flex;
+    justify-content: center;
+    gap: 20px; /* Space between the steps */
+    margin: 0 auto;
+    max-width: 1200px;
+    height: 270px;
+}
+
+.step {
+    background-color: #0d575c; /* Box background color */
+    padding: 20px;
+    border-radius: 10px;
+    width: 30%;
+    box-shadow: 0px 4px 10px rgba(0, 0, 0, 0.1); /* Shadow effect */
+}
+
+.step h3 {
+    font-size: 1.5rem;
+    margin-top: 20px;
+    margin-bottom: 15px;
+}
+
+.step p {
+    font-size: 1rem;
+    text-align:justify;
+    color: #a8b2d1;
+}
+
+/* Info Section Layout */
+.infos {
+    background-image: url('./img.jpg');
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    height: 100%;
+    display: flex;
+    padding: 10px 0;
+    color: teal;
+    display: flex;
+    justify-content: space-between;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding-right: 10px;
+    padding-top: 150px;
+    padding-bottom: 20px;
+    padding-left: 60px;
+}
+
+.infos > div {
+    flex: 1;
+    text-align: center;
+}
+
+.infos h3 {
+    font-size: 1.8rem;
+    color: #2a615e;
+    margin-bottom: 15px;
+}
+
+.infos p {
+    font-size: 1rem;
+    color: #555;
+    line-height: 1.6;
+}
+
+/* Footer Styles */
+footer {
+    background-color: #2a615e;
+    color: white;
+    text-align: center;
+    padding: 20px 0;
+    margin-top: 40px;
+}
+
+footer p {
+    margin: 0;
+    font-size: 0.9rem;
+}
+
+
+/* src/pages/Form.css */
+
+.form-container {
+    width: 400px;
+    margin-top: 100px;
+    margin-left: 430px;
+    margin-right: 500px;
+    padding: 20px;
+    background-color: #c8ecf0;
+    border-radius: 8px;
+    box-shadow: 0px 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.form-container form {
+    display: flex;
+    flex-direction: column;
+}
+
+.form-container input {
+    margin: 10px 0;
+    padding: 10px;
+    border-radius: 4px;
+    border: 1px solid #ccc;
+}
+
+.form-container button {
+    padding: 10px;
+    background-color: #006666;
+    color: white;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+}
+
+.form-container button:hover {
+    background-color: #004d4d;
+}
