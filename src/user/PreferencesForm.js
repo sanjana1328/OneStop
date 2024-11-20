@@ -30,24 +30,54 @@ function PreferencesForm({ addPreference }) {
         <form className="preferences-form" onSubmit={handleSubmit}>
             <legend><h3 className="title">Preference Form</h3></legend>
             <label>
-                Job Title:
-                <input type="text" name="title" value={formData.title} onChange={handleChange} required />
+                Job Title
+                <select className="options" name="title" value={formData.title} onChange={handleChange} required>
+                    <option value="" disabled>Select Job Title</option>
+                    <option value="Software Engineer">Software Engineer</option>
+                    <option value="Product Manager">Product Manager</option>
+                    <option value="Data Analyst">Data Analyst</option>
+                    <option value="UI/UX Designer">UI/UX Designer</option>
+                </select>
             </label>
             <label>
-                Company:
-                <input type="text" name="company" value={formData.company} onChange={handleChange} />
+                Company
+                <select className="options" name="company" value={formData.company} onChange={handleChange}>
+                    <option value="" disabled>Select Company</option>
+                    <option value="Google">Google</option>
+                    <option value="Microsoft">Microsoft</option>
+                    <option value="Amazon">Amazon</option>
+                    <option value="Apple">Apple</option>
+                </select>
             </label>
             <label>
-                Location:
-                <input type="text" name="location" value={formData.location} onChange={handleChange} />
+                Location
+                <select className="options" name="location" value={formData.location} onChange={handleChange}>
+                    <option value="" disabled>Select Location</option>
+                    <option value="Bangalore">Bangalore</option>
+                    <option value="Mumbai">Mumbai</option>
+                    <option value="New York">New York</option>
+                    <option value="San Francisco">San Francisco</option>
+                </select>
             </label>
             <label>
-                Job Type:
-                <input type="text" name="jobType" value={formData.jobType} onChange={handleChange} />
+                Job Type
+                <select className="options" name="jobType" value={formData.jobType} onChange={handleChange}>
+                    <option value="" disabled>Select Job Type</option>
+                    <option value="Full-time">Full-time</option>
+                    <option value="Part-time">Part-time</option>
+                    <option value="Internship">Internship</option>
+                    <option value="Contract">Contract</option>
+                </select>
             </label>
             <label>
-                Platform:
-                <input type="text" name="platformName" value={formData.platformName} onChange={handleChange} />
+                Platform
+                <select className="options" name="platformName" value={formData.platformName} onChange={handleChange}>
+                    <option value="" disabled>Select Platform</option>
+                    <option value="LinkedIn">LinkedIn</option>
+                    <option value="Indeed">Indeed</option>
+                    <option value="Glassdoor">Glassdoor</option>
+                    <option value="Naukri">Naukri</option>
+                </select>
             </label>
             
             <button type="submit">Submit</button>

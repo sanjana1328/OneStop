@@ -23,6 +23,8 @@ function UserPreferences({ preferences }) {
                         onClick={() => handlePreferenceClick(preference)}
                     >
                         <h3>{preference.title}</h3>
+                        <h4>{preference.company}</h4>
+                        <h5>{preference.location}</h5>
                         <span>&#x279C;</span>
                     </div>
                 ))

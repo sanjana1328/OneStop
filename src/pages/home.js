@@ -8,7 +8,7 @@ function Home() {
 
     return (
         <div className="home">
-            <div className="main">
+            <div className="main" id="home">
             <br/>
             <h1>One Stop - The Job Finder</h1><br/><br/>
             <p className="subtitle">Let Your Dream Job Find You By Matching Talents With Perfect Opportunities</p>
