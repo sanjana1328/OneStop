@@ -30,7 +30,7 @@ const Header = () => {
 
     return (
         <header className="header">
-            <div className="logo">LOGO</div>
+            <div className="logo"></div>
             <nav className="navs">
                 <a href="/" id="links" onClick={handleHomeClick}>Home</a> {/* Smooth scroll to Home */}
                 <a href="/about" id="links" onClick={handleAboutClick}>About</a> {/* Smooth scroll to About */}

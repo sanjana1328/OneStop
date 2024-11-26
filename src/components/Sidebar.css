@@ -1,5 +1,6 @@
 /* src/components/Sidebar.css */
 .sidebar {
+    margin-top: 50px;
     width: 200px;
     background-color: #83d3d3;
     color: #ecf0f1;
@@ -25,3 +26,44 @@
 #links:hover {
     color: #004d4d;
 }
+ /* Sidebar Styling */
+ .sidebar {
+    position: fixed;
+    left: 0;
+    top: 0;
+    bottom: 0;
+    width: 250px;
+    background-color: #ecf0f1;
+    padding: 20px;
+    box-shadow: 2px 0 5px rgba(0, 0, 0, 0.1);
+  }
+  
+  .sidebar a {
+    display: block;
+    padding: 12px;
+    color: #3498db;
+    font-size: 1.2rem;
+    text-decoration: none;
+    margin-bottom: 10px;
+    border-radius: 4px;
+  }
+  
+  .sidebar a:hover {
+    background-color: #3498db;
+    color: white;
+  }
+  
+  .error-message {
+    color: #e74c3c;
+    font-size: 1.1rem;
+    margin-bottom: 15px;
+  }
+  
+  .main-content {
+    display: flex;
+  }
+  
+  .content {
+    padding: 20px;
+    width: 100%;
+  }
