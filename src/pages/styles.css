@@ -201,3 +201,7 @@ footer p {
 .form-container button:hover {
     background-color: #004d4d;
 }
+.error {
+    color: red;
+    margin-top: 10px;
+}
