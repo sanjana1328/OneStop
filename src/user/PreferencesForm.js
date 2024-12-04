@@ -1,6 +1,8 @@
-// src/user/PreferencesForm.js
+// File: src/user/PreferencesForm.js
+
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
+import axios from 'axios'; // Ensure axios is installed: npm install axios
 import './styles.css';
 
 function PreferencesForm({ addPreference }) {
@@ -22,7 +24,7 @@ function PreferencesForm({ addPreference }) {
         setFormData((prevData) => ({ ...prevData, [name]: value }));
     };
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.preventDefault();
         const { title, company, location, jobType, platformName, otherTitle, otherCompany, otherLocation, otherJobType } = formData;
 
@@ -32,27 +34,38 @@ function PreferencesForm({ addPreference }) {
         const finalLocation = location === 'Other' ? otherLocation : location;
         const finalJobType = jobType === 'Other' ? otherJobType : jobType;
 
-        // Add preference only if a title is selected
-        if (finalTitle) {
+        // Validate required fields
+        if (!finalTitle || !platformName) {
+            alert('Job Title and Platform are required.');
+            return;
+        }
+
+        const preferenceData = {
+            title: finalTitle,
+            company: finalCompany,
+            location: finalLocation,
+            jobType: finalJobType,
+            platformName
+        };
+
+        try {
+            // Send data to backend
+            const response = await axios.post('http://localhost:5001/api/preferences', preferenceData);
+            console.log('Response:', response.data);
+
+            // Add preference to state (if necessary)
             addPreference({
-                id: Date.now(),
-                title: finalTitle,
-                company: finalCompany,
-                location: finalLocation,
-                jobType: finalJobType,
-                platformName
+                id: response.data.id || Date.now(), // Adjust based on backend response
+                ...preferenceData
             });
 
             // Redirect to the preferences page with the selected preferences
             navigate('/preferences', {
-                state: {
-                    title: finalTitle,
-                    company: finalCompany,
-                    location: finalLocation,
-                    jobType: finalJobType,
-                    platformName
-                }
+                state: preferenceData,
             });
+        } catch (error) {
+            console.error('Error saving preference:', error.response?.data || error.message);
+            alert('Failed to save preference. Please try again.');
         }
     };
 

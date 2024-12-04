@@ -1,46 +1,84 @@
 // File: backend/server.js
 
-const express = require("express");
-const cors = require("cors");
-const bodyParser = require("body-parser");
-const nodemailer = require("nodemailer");
-const { sendWhatsAppMessage } = require("./utils/whatsapp");
+const express = require('express');
+const mongoose = require('mongoose');
+const cors = require('cors');
 
 const app = express();
-const port = process.env.PORT || 5001;
+const PORT = 5001;
 
+// Middleware
 app.use(cors());
-app.use(bodyParser.json());
+app.use(express.json());
 
-app.post("/api/jobs/search", (req, res) => {
-    const { title, location, platform } = req.body;
-    // Fetch jobs based on user preferences from a mock database
-    const jobs = [
-        { id: 1, title: "Software Engineer", company: "Company A", location: "New York" },
-        { id: 2, title: "Frontend Developer", company: "Company B", location: "California" },
-        // Add more mock jobs as needed
-    ];
+// Connect to MongoDB
+mongoose.connect('mongodb://localhost:27017/jobFinder', {
+    useNewUrlParser: true,
+    useUnifiedTopology: true,
+})
+    .then(() => console.log('Connected to MongoDB'))
+    .catch((err) => console.error('Error connecting to MongoDB:', err));
 
-    const filteredJobs = jobs.filter(
-        (job) =>
-            (title ? job.title.includes(title) : true) &&
-            (location ? job.location.includes(location) : true)
-    );
-
-    res.json(filteredJobs);
+// Preference Schema
+const preferenceSchema = new mongoose.Schema({
+    title: { type: String, required: true },
+    company: { type: String },
+    location: { type: String },
+    jobType: { type: String },
+    platformName: { type: String, required: true },
+    createdAt: { type: Date, default: Date.now },
 });
 
-// Mock route for sending email notifications
-app.post("/api/notify", (req, res) => {
-    const { notificationType, email, phoneNumber } = req.body;
-    if (notificationType === "email") {
-        sendEmailNotification(email);
-    } else if (notificationType === "whatsapp") {
-        sendWhatsAppMessage(phoneNumber, "Your job preferences have been processed!");
+app.get('/api/preferences', async (req, res) => {
+    try {
+        const preferences = await Preference.find();
+        res.status(200).json(preferences);
+    } catch (err) {
+        console.error('Error fetching preferences:', err.message);
+        res.status(500).send({ message: 'Failed to fetch preferences' });
     }
-    res.send("Notification sent!");
 });
 
-app.listen(port, () => {
-    console.log(`Server running on port ${port}`);
+
+// Preference Model
+const Preference = mongoose.model('Preference', preferenceSchema);
+
+// API Route to Save Preferences
+app.post('/api/preferences', async (req, res) => {
+    try {
+        const { title, company, location, jobType, platformName } = req.body;
+
+        // Basic validation
+        if (!title || !platformName) {
+            return res.status(400).json({ error: 'Title and Platform are required' });
+        }
+
+        const newPreference = new Preference({
+            title,
+            company,
+            location,
+            jobType,
+            platformName,
+        });
+
+        await newPreference.save();
+        console.log('Saved to database:', newPreference);
+        res.status(201).json({ message: 'Preference saved successfully' });
+    } catch (error) {
+        console.error('Error saving preference:', error);
+        res.status(500).json({ error: 'Failed to save preference' });
+    }
 });
+
+// API Route to Get All Preferences (Optional)
+app.get('/api/preferences', async (req, res) => {
+    try {
+        const preferences = await Preference.find();
+        res.status(200).json(preferences);
+    } catch (error) {
+        res.status(500).json({ error: 'Failed to fetch preferences' });
+    }
+});
+
+// Start Server
+app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));

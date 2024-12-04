@@ -1,3 +1,5 @@
+// File: src/App.js
+
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -18,7 +20,7 @@ function AppContent() {
     const location = useLocation();
 
     // Define routes where the Sidebar should be displayed
-    const sidebarRoutes = ['/preferences', '/preferences-form', '/preferences','/settingPage','/notificationpage/:id'];
+    const sidebarRoutes = ['/preferences', '/preferences-form', '/preferences', '/settingPage', '/notificationpage/:id'];
 
     // Check if Sidebar should be visible on the current route
     const shouldShowSidebar = sidebarRoutes.some(route =>

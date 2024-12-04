@@ -1,3 +1,5 @@
+// File: src/user/PreferenceDetail.js
+
 import React from 'react';
 import { useLocation } from 'react-router-dom';
 import './styles.css';
@@ -17,11 +19,11 @@ function PreferenceDetail() {
         let searchURL = '';
 
         if (platformName === 'LinkedIn') {
-            searchURL = `https://www.linkedin.com/jobs/search?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(jobLocation)}&f_TPR=r86400&f_JT=${encodeURIComponent(jobType)}&company=${encodeURIComponent(company)}`;
+            searchURL = `https://www.linkedin.com/jobs/search?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(jobLocation)}&f_JT=${encodeURIComponent(jobType)}&f_C=${encodeURIComponent(company)}`;
         } else if (platformName === 'Naukri') {
             searchURL = `https://www.naukri.com/jobs?keywords=${encodeURIComponent(title)}&location=${encodeURIComponent(jobLocation)}&company=${encodeURIComponent(company)}&jobType=${encodeURIComponent(jobType)}`;
         } else if (platformName === 'Indeed') {
-            searchURL = `https://www.indeed.com/jobs?q=${encodeURIComponent(title)}&l=${encodeURIComponent(jobLocation)}&company=${encodeURIComponent(company)}&jt=${encodeURIComponent(jobType)}`;
+            searchURL = `https://www.indeed.com/jobs?q=${encodeURIComponent(title)}&l=${encodeURIComponent(jobLocation)}&jt=${encodeURIComponent(jobType)}&cmp=${encodeURIComponent(company)}`;
         } else if (platformName === 'Glassdoor') {
             searchURL = `https://www.glassdoor.com/Job/jobs.htm?sc.keyword=${encodeURIComponent(title)}&locT=&locId=&jobType=${encodeURIComponent(jobType)}&company=${encodeURIComponent(company)}&jobLocation=${encodeURIComponent(jobLocation)}`;
         } else {
