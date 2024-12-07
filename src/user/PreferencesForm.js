@@ -27,7 +27,7 @@ function PreferencesForm({ addPreference }) {
     const handleSubmit = async (e) => {
         e.preventDefault();
         const { title, company, location, jobType, platformName, otherTitle, otherCompany, otherLocation, otherJobType } = formData;
-
+    
         // Use custom input if the "Other" option was selected
         const finalTitle = title === 'Other' ? otherTitle : title;
         const finalCompany = company === 'Other' ? otherCompany : company;
@@ -40,6 +40,24 @@ function PreferencesForm({ addPreference }) {
             return;
         }
 
+        // Add checks for 'Other' fields if needed
+        if (title === 'Other' && !otherTitle) {
+            alert('Please enter a valid job title.');
+            return;
+        }
+        if (company === 'Other' && !otherCompany) {
+            alert('Please enter a valid company name.');
+            return;
+        }
+        if (location === 'Other' && !otherLocation) {
+            alert('Please enter a valid location.');
+            return;
+        }
+        if (jobType === 'Other' && !otherJobType) {
+            alert('Please enter a valid job type.');
+            return;
+        }
+
         const preferenceData = {
             title: finalTitle,
             company: finalCompany,
@@ -48,24 +66,27 @@ function PreferencesForm({ addPreference }) {
             platformName
         };
 
+        console.log('Preference Data:', preferenceData); // Log preference data
+    
         try {
             // Send data to backend
-            const response = await axios.post('http://localhost:5001/api/preferences', preferenceData);
+            const response = await axios.post('http://localhost:5000/api/preferences', preferenceData);
             console.log('Response:', response.data);
-
+    
             // Add preference to state (if necessary)
             addPreference({
                 id: response.data.id || Date.now(), // Adjust based on backend response
                 ...preferenceData
             });
-
+    
             // Redirect to the preferences page with the selected preferences
             navigate('/preferences', {
                 state: preferenceData,
             });
         } catch (error) {
             console.error('Error saving preference:', error.response?.data || error.message);
-            alert('Failed to save preference. Please try again.');
+            console.log('Error details:', error);
+            alert('Failed to save preference. Please check the console for details.');
         }
     };
 

@@ -1,30 +1,24 @@
-// File: backend/utils/email.js
-
 const nodemailer = require("nodemailer");
 
-const sendEmailNotification = (email) => {
+const sendJobNotification = async (user, jobs) => {
     const transporter = nodemailer.createTransport({
         service: "gmail",
         auth: {
-            user: "your_email@gmail.com", // Your email
-            pass: "your_email_password", // Your email password or App password
+            user: "your_email@gmail.com",
+            pass: "your_password",
         },
     });
 
+    const jobLinks = jobs.map(job => `<a href="${job.applyLink}">${job.title}</a>`).join("<br>");
+
     const mailOptions = {
         from: "your_email@gmail.com",
-        to: email,
-        subject: "Job Preferences Processed",
-        text: "Your job preferences have been processed successfully!",
+        to: user.email,
+        subject: "New Jobs Matching Your Preferences!",
+        html: `<h3>Jobs for you:</h3>${jobLinks}`,
     };
 
-    transporter.sendMail(mailOptions, (error, info) => {
-        if (error) {
-            console.log(error);
-        } else {
-            console.log("Email sent: " + info.response);
-        }
-    });
+    await transporter.sendMail(mailOptions);
 };
 
-module.exports = { sendEmailNotification };
+module.exports = sendJobNotification;

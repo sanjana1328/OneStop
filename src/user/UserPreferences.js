@@ -1,4 +1,3 @@
-// src/user/UserPreferences.js
 import React, { useEffect, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import './styles.css';
@@ -11,7 +10,7 @@ function UserPreferences() {
     useEffect(() => {
         const fetchPreferences = async () => {
             try {
-                const response = await fetch('http://localhost:5001/api/preferences');
+                const response = await fetch('http://localhost:5000/api/preferences');
                 if (!response.ok) {
                     throw new Error('Failed to fetch preferences');
                 }

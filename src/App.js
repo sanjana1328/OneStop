@@ -1,5 +1,3 @@
-// File: src/App.js
-
 import React, { useState } from 'react';
 import { BrowserRouter as Router, Route, Routes, useLocation } from 'react-router-dom';
 import Header from './components/Header';
@@ -27,6 +25,7 @@ function AppContent() {
         location.pathname.startsWith(route.replace(':id', ''))
     );
 
+    // Function to add a new preference
     const addPreference = (preference) => {
         setPreferences((prevPreferences) => [...prevPreferences, preference]);
     };
