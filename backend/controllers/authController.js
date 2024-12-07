@@ -1,3 +1,4 @@
+//backend/controllers/authController
 const User = require('../models/user'); // Correct import for your User model
 const bcrypt = require('bcryptjs');
 

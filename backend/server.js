@@ -1,84 +1,87 @@
-// File: backend/server.js
-
 const express = require('express');
 const mongoose = require('mongoose');
 const cors = require('cors');
+const bcrypt = require('bcrypt');
 
 const app = express();
-const PORT = 5001;
+const PORT = process.env.PORT || 5000;
+const { signup, login } = require('./controllers/authController');
 
 // Middleware
-app.use(cors());
+app.use(cors({ 
+    origin: 'http://localhost:3000',
+    methods: ['GET', 'POST', 'PUT', 'DELETE'],
+    credentials: true 
+}));
 app.use(express.json());
 
-// Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/jobFinder', {
-    useNewUrlParser: true,
-    useUnifiedTopology: true,
-})
-    .then(() => console.log('Connected to MongoDB'))
-    .catch((err) => console.error('Error connecting to MongoDB:', err));
+// Connect to `jobFinder` database
+const jobFinderConnection = mongoose.createConnection('mongodb://localhost:27017/jobFinder');
+jobFinderConnection.once('open', () => console.log('Connected to jobFinder database'));
+jobFinderConnection.on('error', (err) => console.error('Error connecting to jobFinder:', err));
 
-// Preference Schema
-const preferenceSchema = new mongoose.Schema({
-    title: { type: String, required: true },
-    company: { type: String },
-    location: { type: String },
-    jobType: { type: String },
-    platformName: { type: String, required: true },
-    createdAt: { type: Date, default: Date.now },
+// Connect to `signupdb` database
+const signupConnection = mongoose.createConnection('mongodb://localhost:27017/signupdb');
+signupConnection.once('open', () => console.log('Connected to signupdb database'));
+signupConnection.on('error', (err) => console.error('Error connecting to signupdb:', err));
+
+// Schemas and Models
+const preferenceSchema = new mongoose.Schema({ title: String, platformName: String });
+const Preference = jobFinderConnection.model('Preference', preferenceSchema);
+
+const userSchema = new mongoose.Schema({
+    name: String,
+    email: { type: String, unique: true },
+    phone: String,
+    password: String,
 });
+const User = signupConnection.model('User', userSchema);
 
-app.get('/api/preferences', async (req, res) => {
+// Signup API
+app.post('/signup', async (req, res) => {
     try {
-        const preferences = await Preference.find();
-        res.status(200).json(preferences);
-    } catch (err) {
-        console.error('Error fetching preferences:', err.message);
-        res.status(500).send({ message: 'Failed to fetch preferences' });
+        const { name, email, phone, password } = req.body;
+        if (!name || !email || !phone || !password) {
+            return res.status(400).json({ message: 'All fields are required' });
+        }
+        const existingUser = await User.findOne({ email });
+        if (existingUser) {
+            return res.status(409).json({ message: 'Email already registered' });
+        }
+        const hashedPassword = await bcrypt.hash(password, 10);
+        const newUser = new User({ name, email, phone, password: hashedPassword });
+        await newUser.save();
+        res.status(201).json({ message: 'User registered successfully' });
+    } catch (error) {
+        console.error('Signup error:', error.stack);
+        res.status(500).json({ message: 'Internal server error' });
     }
 });
+app.post('/login', async (req, res) => {
+    const { email, password } = req.body;
 
-
-// Preference Model
-const Preference = mongoose.model('Preference', preferenceSchema);
-
-// API Route to Save Preferences
-app.post('/api/preferences', async (req, res) => {
     try {
-        const { title, company, location, jobType, platformName } = req.body;
-
-        // Basic validation
-        if (!title || !platformName) {
-            return res.status(400).json({ error: 'Title and Platform are required' });
+        // Check if user exists
+        const user = await User.findOne({ email });
+        
+        if (!user) {
+            return res.status(404).json({ message: 'User not found' });
         }
 
-        const newPreference = new Preference({
-            title,
-            company,
-            location,
-            jobType,
-            platformName,
-        });
+        // Compare passwords
+        const isMatch = await bcrypt.compare(password, user.password);
+        if (!isMatch) {
+            return res.status(401).json({ message: 'Invalid credentials' });
+        }
 
-        await newPreference.save();
-        console.log('Saved to database:', newPreference);
-        res.status(201).json({ message: 'Preference saved successfully' });
+        // Login successful
+        return res.status(200).json({ message: 'Login successful', user: { email: user.email, name: user.name } });
     } catch (error) {
-        console.error('Error saving preference:', error);
-        res.status(500).json({ error: 'Failed to save preference' });
-    }
-});
-
-// API Route to Get All Preferences (Optional)
-app.get('/api/preferences', async (req, res) => {
-    try {
-        const preferences = await Preference.find();
-        res.status(200).json(preferences);
-    } catch (error) {
-        res.status(500).json({ error: 'Failed to fetch preferences' });
+        console.error('Error during login:', error);
+        return res.status(500).json({ message: 'Internal server error' });
     }
 });
 
 // Start Server
 app.listen(PORT, () => console.log(`Server running on http://localhost:${PORT}`));
+

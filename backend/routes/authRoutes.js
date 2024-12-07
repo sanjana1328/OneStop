@@ -1,5 +1,7 @@
+//backend/routes/authRoutes.js
 const express = require('express');
 const { signup, login } = require('../controllers/authController'); // Add login to imports
+const { default: login } = require('../../src/pages/Login');
 
 const router = express.Router();
 
